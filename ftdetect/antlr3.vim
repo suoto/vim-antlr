@@ -1,1 +1,1 @@
-au BufNewFile,BufRead *.g3 setf antlr3
+au BufRead,BufNewFile *.g3 set filetype=antlr3
