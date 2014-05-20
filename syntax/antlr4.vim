@@ -11,7 +11,7 @@ elseif exists("b:current_syntax")
 endif
 
 syntax region antlrBlockComment start=/\/\*/ end=/\*\//
-syntax match antlrLineComment /\/\//
+syntax match antlrLineComment /\/\/.*$/
 
 syntax match antlrToken /[A-Z][a-zA-Z0-9_]*/
 syntax region antlrLiteral start=/'/ end=/'/ contains=antlrEscape,antlrUnicodeEscape
