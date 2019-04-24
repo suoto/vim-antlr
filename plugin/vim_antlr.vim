@@ -19,7 +19,7 @@ function! s:GetCommand(buffer) abort
 endfunction
 
 function! s:Callback(buffer, lines) abort
-    let l:pattern = '\v^(error|warning)\((\d+)\):\s*([^:]*):(\d+):(\d+): (.*)'
+    let l:pattern = '\v^(error|warning)\((\d+)\):\s*([^:]*):(\d+)?:(\d+)?: (.*)'
 
     let l:output = []
     for l:match in ale#util#GetMatches(a:lines, l:pattern)
