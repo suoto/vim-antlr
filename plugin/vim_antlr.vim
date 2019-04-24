@@ -1,16 +1,21 @@
 
-let g:vim_antlr4_temp_dir = '/tmp/vim_antlr4'
+let s:vim_antlr4_temp_dir = '/tmp/vim_antlr4'
+let s:default_antlr4_command = 'antlr4'
+let s:default_antlr4_args = '-long-messages -no-listener -no-visitor'
 
 function! s:GetExecutable(...)
-    return get(g:, 'antlr4_executable', 'antlr4')
+    return get(g:, 'antlr4_executable', s:default_antlr4_command)
 endfunction
 
 function! s:GetCommand(buffer) abort
-    if !isdirectory(g:vim_antlr4_temp_dir)
-        call mkdir(g:vim_antlr4_temp_dir)
+    if !isdirectory(s:vim_antlr4_temp_dir)
+        call mkdir(s:vim_antlr4_temp_dir)
     endif
 
-    return s:GetExecutable() . ' -o ' . g:vim_antlr4_temp_dir . ' ' . bufname(a:buffer)
+    return s:GetExecutable() . ' '
+                \ . s:default_antlr4_args
+                \ . ' -o ' . s:vim_antlr4_temp_dir 
+                \ . ' ' . bufname(a:buffer)
 endfunction
 
 function! s:Callback(buffer, lines) abort
@@ -32,8 +37,8 @@ function! s:Callback(buffer, lines) abort
     return l:output
 endfunction
 
-" Setup ALE checker
-if exists(':ALEInfo')
+" Setup ALE checker if present
+try
     call ale#linter#Define('antlr4', {
                 \   'name': 'vim-antlr4',
                 \   'executable': function('s:GetExecutable'),
@@ -42,4 +47,5 @@ if exists(':ALEInfo')
                 \   'output_stream': 'both',
                 \   'lint_file': 1
                 \})
-endif
+catch /^Vim\%((\a\+)\)\=:E117/
+endtry
